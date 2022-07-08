@@ -3,7 +3,9 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
+
 import AuthService from "../services/auth.service";
+
 const required = value => {
   if (!value) {
     return (
@@ -13,6 +15,7 @@ const required = value => {
     );
   }
 };
+
 const email = value => {
   if (!isEmail(value)) {
     return (
@@ -22,6 +25,7 @@ const email = value => {
     );
   }
 };
+
 const vusername = value => {
   if (value.length < 3 || value.length > 20) {
     return (
@@ -31,6 +35,7 @@ const vusername = value => {
     );
   }
 };
+
 const vpassword = value => {
   if (value.length < 6 || value.length > 40) {
     return (
@@ -40,6 +45,7 @@ const vpassword = value => {
     );
   }
 };
+
 export default class Register extends Component {
   constructor(props) {
     super(props);
@@ -47,6 +53,7 @@ export default class Register extends Component {
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
+
     this.state = {
       username: "",
       email: "",
@@ -55,28 +62,35 @@ export default class Register extends Component {
       message: ""
     };
   }
+
   onChangeUsername(e) {
     this.setState({
       username: e.target.value
     });
   }
+
   onChangeEmail(e) {
     this.setState({
       email: e.target.value
     });
   }
+
   onChangePassword(e) {
     this.setState({
       password: e.target.value
     });
   }
+
   handleRegister(e) {
     e.preventDefault();
+
     this.setState({
       message: "",
       successful: false
     });
+
     this.form.validateAll();
+
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.register(
         this.state.username,
@@ -96,6 +110,7 @@ export default class Register extends Component {
               error.response.data.message) ||
             error.message ||
             error.toString();
+
           this.setState({
             successful: false,
             message: resMessage
@@ -104,6 +119,7 @@ export default class Register extends Component {
       );
     }
   }
+
   render() {
     return (
       <div className="col-md-12">
@@ -113,6 +129,7 @@ export default class Register extends Component {
             alt="profile-img"
             className="profile-img-card"
           />
+
           <Form
             onSubmit={this.handleRegister}
             ref={c => {
@@ -132,6 +149,7 @@ export default class Register extends Component {
                     validations={[required, vusername]}
                   />
                 </div>
+
                 <div className="form-group">
                   <label htmlFor="email">Email</label>
                   <Input
@@ -143,6 +161,7 @@ export default class Register extends Component {
                     validations={[required, email]}
                   />
                 </div>
+
                 <div className="form-group">
                   <label htmlFor="password">Password</label>
                   <Input
@@ -154,11 +173,13 @@ export default class Register extends Component {
                     validations={[required, vpassword]}
                   />
                 </div>
+
                 <div className="form-group">
                   <button className="btn btn-primary btn-block">Sign Up</button>
                 </div>
               </div>
             )}
+
             {this.state.message && (
               <div className="form-group">
                 <div
